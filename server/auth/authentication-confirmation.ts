@@ -3,15 +3,20 @@ import {
   VerifyAuthenticationResponseOpts,
   verifyAuthenticationResponse,
 } from "@simplewebauthn/server";
-import { LocalStorage } from "node-localstorage";
+// import { LocalStorage } from "node-localstorage";
 import { Request, Response } from "express";
 import { Options, User } from "../utils/types";
 
-export async function verification(req: Request, res: Response) {
-  const localStorage = new LocalStorage("./scratch");
+declare const myWebauthn: any;
+
+export async function verification(req: Request) {
+  // const localStorage = new LocalStorage("./scratch");
+  console.log("req --- ", req);
   const body = req.body.attResp;
 
-  let user: User | null = JSON.parse(localStorage.getItem("user") || "null");
+  // let user: User | null = JSON.parse(localStorage.getItem("user") || "null");
+  let user: User | null = await myWebauthn.get("user", "json");
+
   if (!user) {
     user = {
       id: "internalUserId",
@@ -51,15 +56,19 @@ export async function verification(req: Request, res: Response) {
   const expectedOrigin = process.env.EXPECTED_ORIGIN;
 
   if (!expectedOrigin) {
-    return res.status(400).send({ error: "Expected origin not found" });
+    // return res.status(400).send({ error: "Expected origin not found" });
+    return new Response("Expected origin not found", { status: 400 });
   }
 
   //   const expectedChallenge = req.session.currentChallenge;
 
-  const storedOptions = localStorage.getItem("authOptions");
+  // const storedOptions = localStorage.getItem("authOptions");
+  const storedOptions = await myWebauthn.get("authOptions", "json");
+
   let expectedChallenge = "";
   if (!storedOptions) {
-    return res.status(400).send({ error: "No registration options found" });
+    // return res.status(400).send({ error: "No registration options found" });
+    return new Response("No registration options found", { status: 400 });
   } else {
     const registrationOptions = JSON.parse(storedOptions) as Options;
     expectedChallenge = registrationOptions.challenge;
@@ -76,7 +85,8 @@ export async function verification(req: Request, res: Response) {
   }
 
   if (!dbAuthenticator) {
-    return res.status(400).send({ error: "No authenticator found" });
+    // return res.status(400).send({ error: "No authenticator found" });
+    return new Response("No authenticator found", { status: 400 });
   }
 
   let verification;
@@ -93,9 +103,10 @@ export async function verification(req: Request, res: Response) {
     verification = await verifyAuthenticationResponse(opts);
   } catch (error: any) {
     console.log("error ", verification ?? error ?? "Unknown error");
-    return res.status(500).json({
-      error: error.message || "Unknown error",
-    });
+    // return res.status(500).json({
+    //   error: error.message || "Unknown error",
+    // });
+    return new Response(error.message || "Unknown error", { status: 500 });
   }
 
   const { verified, authenticationInfo } = verification;
@@ -104,5 +115,6 @@ export async function verification(req: Request, res: Response) {
     console.log("dbAuthenticator.counter", dbAuthenticator.counter);
     dbAuthenticator.counter = authenticationInfo.newCounter;
   }
-  return res.send({ verified });
+  // return res.send({ verified });
+  return new Response(JSON.stringify({ verified }));
 }
