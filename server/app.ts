@@ -7,12 +7,14 @@ import https from "https";
 // import session from "express-session";
 import { verification } from "./auth/authentication-confirmation";
 import { authOptions } from "./auth/authentication-options";
+import { configDotenv } from "dotenv";
+import { deleteDevices } from "./auth/delete-devices";
 
 const app = express();
-
+configDotenv();
 app.use(
   Cors({
-    origin: "https://localhost:5173", // replace with your frontend url
+    origin: process.env.EXPECTED_ORIGIN, // replace with your frontend url
     // credentials: true, // enable set cookie if using session based authentication
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
@@ -58,8 +60,14 @@ app.get("/registration-options", registerOptions);
 app.post("/registration-confirmation", registrationConfirmation);
 app.get("/authentication-options", authOptions);
 app.post("/authentication-confirmation", verification);
+app.delete("/delete-devices", deleteDevices);
 
 // listen on the desired port
+const isLoaded = process.env.EXPECTED_ORIGIN && process.env.RP_ID;
 httpsServer.listen(3002, () => {
   console.log("HTTPS Server running on port 3002");
+  console.log(
+    "environment variables status :",
+    !!isLoaded ? "loaded" : "not loaded"
+  );
 });

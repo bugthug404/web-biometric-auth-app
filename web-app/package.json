@@ -18,6 +18,7 @@
     "vite-plugin-mkcert": "^1.17.1"
   },
   "devDependencies": {
+    "@types/node": "^20.10.1",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

@@ -8,8 +8,6 @@ import { Device, User } from "../utils/types";
 
 export async function registerOptions(req: Request, res: Response) {
   const localStorage = new LocalStorage("./scratch");
-  console.log("registrationOptions");
-  // get user from local storage
 
   const u = localStorage.getItem("user") ?? undefined;
   let user: User;
@@ -49,15 +47,14 @@ export async function registerOptions(req: Request, res: Response) {
   }
   let options;
 
-  const rpId = "localhost";
+  const rpId = process.env.RP_ID;
   if (!rpId) {
-    throw new Error("No RP_ID configured");
+    return res.status(400).send({ error: "No RP_ID configured" });
   }
   try {
     const devices = user.devices;
-    // add types from @simplewebauthn/server
     const opts: GenerateRegistrationOptionsOpts = {
-      rpID: rpId,
+      rpID: rpId ?? "",
       rpName: "SimpleWebAuthn Example",
       userID: user.id,
       userName: user.username,
@@ -85,7 +82,6 @@ export async function registerOptions(req: Request, res: Response) {
       },
       supportedAlgorithmIDs: [-7, -257],
     };
-    console.log("opts --- ", opts.excludeCredentials);
 
     options = await generateRegistrationOptions(opts);
     // req.session.currentChallenge = options.challenge;
@@ -94,10 +90,10 @@ export async function registerOptions(req: Request, res: Response) {
     localStorage.setItem("user", JSON.stringify(user));
   } catch (error: any) {
     console.log(error ?? "Unknown error");
-    res.status(500).json({
+    return res.status(500).json({
       error: error.message || "Unknown error",
     });
   }
 
-  res.json(options);
+  return res.json(options);
 }

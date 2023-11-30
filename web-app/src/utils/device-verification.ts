@@ -11,8 +11,10 @@ export async function verification(
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
-      let data = await axios.get(`https://localhost:3002/auth-options`);
-      const opts = data.data;
+      let res = await axios.get(
+        `${import.meta.env.VITE_API}/authentication-options`
+      );
+      const opts = res.data;
 
       let attResp;
       try {
@@ -23,7 +25,7 @@ export async function verification(
       }
 
       let verificationResp = await axios.post(
-        `https://localhost:3002/auth-confirmation`,
+        `${import.meta.env.VITE_API}/authentication-confirmation`,
         {
           attResp,
         }
@@ -41,7 +43,9 @@ export async function verification(
         setSuccess("");
       }
     } catch (error: any) {
-      setError(error.message ?? "Something Went Wrong");
+      setError(
+        error?.response?.data?.error ?? error.message ?? "Something Went Wrong"
+      );
       setSuccess("");
     }
   } else {

@@ -11,7 +11,9 @@ export async function deviceRegistration(
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
-      let data = await axios.get(`https://localhost:3002/registration-options`);
+      let data = await axios.get(
+        `${import.meta.env.VITE_API}/registration-options`
+      );
       const opts = data.data;
 
       let attResp;
@@ -23,7 +25,7 @@ export async function deviceRegistration(
       }
 
       let verificationResp = await axios.post(
-        `https://localhost:3002/registration-confirmation`,
+        `${import.meta.env.VITE_API}/registration-confirmation`,
         {
           attResp,
         }
@@ -33,15 +35,18 @@ export async function deviceRegistration(
         // }
       );
 
-      if (verificationResp && verificationResp.data.verified) {
+      if (verificationResp.data && verificationResp.data.verified) {
         setSuccess("Device Registered Successfully");
         setError("");
       } else {
-        setError("Something Went Wrong2");
+        setError("Something Went Wrong");
         setSuccess("");
       }
     } catch (error: any) {
-      setError(error.message ?? "Something Went Wrong");
+      console.log("error ", error);
+      setError(
+        error?.response?.data?.error ?? error?.message ?? "Something Went Wrong"
+      );
       setSuccess("");
     }
   } else {

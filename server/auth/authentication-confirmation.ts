@@ -10,7 +10,6 @@ import { Options, User } from "../utils/types";
 export async function verification(req: Request, res: Response) {
   const localStorage = new LocalStorage("./scratch");
   const body = req.body.attResp;
-  console.log("body", body);
 
   let user: User | null = JSON.parse(localStorage.getItem("user") || "null");
   if (!user) {
@@ -48,15 +47,19 @@ export async function verification(req: Request, res: Response) {
     };
   }
 
-  const rpId = "localhost";
-  const expectedOrigin = "https://localhost:5173";
+  const rpId = process.env.RP_ID;
+  const expectedOrigin = process.env.EXPECTED_ORIGIN;
+
+  if (!expectedOrigin) {
+    return res.status(400).send({ error: "Expected origin not found" });
+  }
 
   //   const expectedChallenge = req.session.currentChallenge;
 
   const storedOptions = localStorage.getItem("authOptions");
   let expectedChallenge = "";
   if (!storedOptions) {
-    res.status(400).send({ error: "No registration options found" });
+    return res.status(400).send({ error: "No registration options found" });
   } else {
     const registrationOptions = JSON.parse(storedOptions) as Options;
     expectedChallenge = registrationOptions.challenge;
@@ -73,7 +76,7 @@ export async function verification(req: Request, res: Response) {
   }
 
   if (!dbAuthenticator) {
-    res.status(400).send({ error: "No authenticator found" });
+    return res.status(400).send({ error: "No authenticator found" });
   }
 
   let verification;
@@ -82,8 +85,8 @@ export async function verification(req: Request, res: Response) {
     const opts: VerifyAuthenticationResponseOpts = {
       response: body,
       expectedChallenge: `${expectedChallenge}`,
-      expectedOrigin: expectedOrigin,
-      expectedRPID: rpId,
+      expectedOrigin: expectedOrigin ?? "",
+      expectedRPID: rpId ?? "",
       authenticator: dbAuthenticator,
       requireUserVerification: true,
     };
@@ -96,9 +99,10 @@ export async function verification(req: Request, res: Response) {
   }
 
   const { verified, authenticationInfo } = verification;
-  if (verified) {
+  if (verified && dbAuthenticator?.counter) {
     // Update the authenticator's counter in the DB to the newest count in the authentication
+    console.log("dbAuthenticator.counter", dbAuthenticator.counter);
     dbAuthenticator.counter = authenticationInfo.newCounter;
   }
-  res.send({ verified });
+  return res.send({ verified });
 }

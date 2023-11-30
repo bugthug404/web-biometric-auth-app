@@ -45,20 +45,25 @@ export async function registrationConfirmation(req: Request, res: Response) {
   );
   // const challenge = req.session.currentChallenge;
   const expectedChallenge = options.challenge;
+  const expectedOrigin = process.env.EXPECTED_ORIGIN;
 
+  if (!expectedOrigin) {
+    return res.status(400).send({ error: "Expected origin not found" });
+  }
+  const rpId = process.env.RP_ID;
   let verification;
   try {
     const opts = {
       response: body,
       expectedChallenge: `${expectedChallenge}`,
-      expectedOrigin: "https://localhost:5173",
-      expectedRPID: "localhost",
+      expectedOrigin: expectedOrigin ?? "",
+      expectedRPID: rpId ?? "",
       requireUserVerification: true,
     };
     verification = await verifyRegistrationResponse(opts);
   } catch (error: any) {
     return res.status(500).json({
-      error: error.message || "Unknown error",
+      error: "Unknown error",
     });
   }
 
@@ -71,7 +76,7 @@ export async function registrationConfirmation(req: Request, res: Response) {
 
       // this prevents registering the same device twice
       existingDevice = user?.devices?.find((device) => {
-        return isoUint8Array.areEqual(device.credentialID, credentialID);
+        return isoUint8Array.areEqual(device?.credentialID, credentialID);
       });
 
       if (!existingDevice) {
@@ -83,8 +88,8 @@ export async function registrationConfirmation(req: Request, res: Response) {
         };
       }
     } catch (error: any) {
-      res.status(500).json({
-        error: error.message || "Unknown error",
+      return res.status(500).json({
+        error: "Unknown error",
       });
     }
   }
@@ -94,5 +99,5 @@ export async function registrationConfirmation(req: Request, res: Response) {
     user.devices.push(newDevice);
     localStorage.setItem("user", JSON.stringify(user));
   }
-  res.json({ verified, registrationInfo, newDevice });
+  return res.json({ verified, registrationInfo, newDevice });
 }
