@@ -11,12 +11,10 @@ export async function authOptions(req: Request, res: Response) {
   const rpId = "localhost";
   let user: User | null = JSON.parse(localStorage.getItem("user") || "null");
 
-  if (!user) {
-    user = {
-      id: "internalUserId",
-      username: "user@localhost",
-      devices: [],
-    } as User;
+  if (!user?.devices?.length) {
+    return res.status(500).json({
+      error: "No user found",
+    });
   } else {
     // We need to convert the regular arrays to Uint8Arrays
     // because regular arrays are easier to store in local storage
@@ -66,5 +64,5 @@ export async function authOptions(req: Request, res: Response) {
 
   localStorage.setItem("authOptions", JSON.stringify(options));
 
-  res.json(options);
+  return res.json(options);
 }

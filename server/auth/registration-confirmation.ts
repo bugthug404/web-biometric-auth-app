@@ -83,7 +83,7 @@ export async function registrationConfirmation(req: Request, res: Response) {
         };
       }
     } catch (error: any) {
-      res.status(500).json({
+      return res.status(500).json({
         error: error.message || "Unknown error",
       });
     }
@@ -94,5 +94,5 @@ export async function registrationConfirmation(req: Request, res: Response) {
     user.devices.push(newDevice);
     localStorage.setItem("user", JSON.stringify(user));
   }
-  res.json({ verified, registrationInfo, newDevice });
+  return res.json({ verified, registrationInfo, newDevice });
 }

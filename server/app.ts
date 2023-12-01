@@ -5,8 +5,9 @@ import Cors from "cors";
 import fs from "fs";
 import https from "https";
 // import session from "express-session";
-import { verification } from "./auth/authentication-confirmation";
+import { authenticationConfirmation } from "./auth/authentication-confirmation";
 import { authOptions } from "./auth/authentication-options";
+import { deleteDevices } from "./auth/delete-devices";
 
 const app = express();
 
@@ -57,7 +58,8 @@ app.get("/", (req: Request, res: Response) =>
 app.get("/registration-options", registerOptions);
 app.post("/registration-confirmation", registrationConfirmation);
 app.get("/authentication-options", authOptions);
-app.post("/authentication-confirmation", verification);
+app.post("/authentication-confirmation", authenticationConfirmation);
+app.delete("/delete-devices", deleteDevices);
 
 // listen on the desired port
 httpsServer.listen(3002, () => {

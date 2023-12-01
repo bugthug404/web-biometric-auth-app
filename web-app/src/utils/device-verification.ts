@@ -11,7 +11,9 @@ export async function verification(
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
-      let data = await axios.get(`https://localhost:3002/auth-options`);
+      let data = await axios.get(
+        `https://localhost:3002/authentication-options`
+      );
       const opts = data.data;
 
       let attResp;
@@ -23,7 +25,7 @@ export async function verification(
       }
 
       let verificationResp = await axios.post(
-        `https://localhost:3002/auth-confirmation`,
+        `https://localhost:3002/authentication-confirmation`,
         {
           attResp,
         }

@@ -7,7 +7,7 @@ import { LocalStorage } from "node-localstorage";
 import { Request, Response } from "express";
 import { Options, User } from "../utils/types";
 
-export async function verification(req: Request, res: Response) {
+export async function authenticationConfirmation(req: Request, res: Response) {
   const localStorage = new LocalStorage("./scratch");
   const body = req.body.attResp;
   console.log("body", body);
@@ -56,7 +56,7 @@ export async function verification(req: Request, res: Response) {
   const storedOptions = localStorage.getItem("authOptions");
   let expectedChallenge = "";
   if (!storedOptions) {
-    res.status(400).send({ error: "No registration options found" });
+    return res.status(400).send({ error: "No registration options found" });
   } else {
     const registrationOptions = JSON.parse(storedOptions) as Options;
     expectedChallenge = registrationOptions.challenge;
@@ -73,7 +73,7 @@ export async function verification(req: Request, res: Response) {
   }
 
   if (!dbAuthenticator) {
-    res.status(400).send({ error: "No authenticator found" });
+    return res.status(400).send({ error: "No authenticator found" });
   }
 
   let verification;
@@ -100,5 +100,5 @@ export async function verification(req: Request, res: Response) {
     // Update the authenticator's counter in the DB to the newest count in the authentication
     dbAuthenticator.counter = authenticationInfo.newCounter;
   }
-  res.send({ verified });
+  return res.send({ verified });
 }

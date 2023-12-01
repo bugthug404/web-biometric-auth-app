@@ -94,10 +94,10 @@ export async function registerOptions(req: Request, res: Response) {
     localStorage.setItem("user", JSON.stringify(user));
   } catch (error: any) {
     console.log(error ?? "Unknown error");
-    res.status(500).json({
+    return res.status(500).json({
       error: error.message || "Unknown error",
     });
   }
 
-  res.json(options);
+  return res.json(options);
 }

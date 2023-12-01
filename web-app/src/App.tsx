@@ -1,10 +1,29 @@
 import { useState } from "react";
 import { deviceRegistration } from "./utils/device-registration";
 import { verification } from "./utils/device-verification";
+import axios from "axios";
 
 function App() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  async function handleDelete() {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API}/delete-devices`
+      );
+      if (response.status === 200) {
+        setSuccess("Devices deleted successfully");
+        setError("");
+      } else {
+        setError("Error deleting devices");
+        setSuccess("");
+      }
+    } catch (error: any) {
+      setError(error.message ?? "Error deleting devices");
+      setSuccess("");
+    }
+  }
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -24,9 +43,17 @@ function App() {
           onClick={async () => {
             await verification(setError, setSuccess);
           }}
-          className="w-full py-2 text-center bg-blue-200 rounded-lg cursor-pointer select-none"
+          className="w-full py-2 text-center bg-green-200 rounded-lg cursor-pointer select-none"
         >
           Verify
+        </div>
+        <div
+          onClick={() => {
+            handleDelete();
+          }}
+          className="w-full py-2 text-center bg-red-200 rounded-lg cursor-pointer select-none"
+        >
+          Delete Devices
         </div>
         <div className="text-xs text-center text-red-500">{error}</div>
         <div className="text-xs text-center text-green-500">{success}</div>
