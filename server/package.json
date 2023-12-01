@@ -2,7 +2,7 @@
   "name": "silent-bush-807d",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "webpack --mode=development --watch",
     "build": "webpack --mode=production",
     "start": "node build/app.js"
   },
