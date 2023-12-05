@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { deviceRegistration } from "./utils/device-registration";
+import { deviceRegistration } from "../../next/pages/utils/device-registration";
 import { startAuthentication } from "@simplewebauthn/browser";
 import { useNavigate } from "react-router-dom";
-import { noPassAuthOptionPatient } from "./utils/registration-options";
+import { noPassAuthOptionPatient } from "../../next/pages/utils/registration-options";
 
 function Login() {
   const [error, setError] = useState("");

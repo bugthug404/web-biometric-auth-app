@@ -4,16 +4,14 @@ import {
 } from "@simplewebauthn/browser";
 import axios from "axios";
 
-export async function verification(
+export async function authentication(
   setError: Function,
   setSuccess: Function
 ): Promise<any> {
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
-      let data = await axios.get(
-        `https://localhost:3002/authentication-options`
-      );
+      let data = await axios.get(`/api/authentication-options`);
       const opts = data.data;
 
       let attResp;
@@ -25,7 +23,7 @@ export async function verification(
       }
 
       let verificationResp = await axios.post(
-        `https://localhost:3002/authentication-confirmation`,
+        `/api/authentication-confirmation`,
         {
           attResp,
         }
@@ -43,7 +41,9 @@ export async function verification(
         setSuccess("");
       }
     } catch (error: any) {
-      setError(error.message ?? "Something Went Wrong");
+      setError(
+        error?.response?.data?.error ?? error.message ?? "Something Went Wrong"
+      );
       setSuccess("");
     }
   } else {

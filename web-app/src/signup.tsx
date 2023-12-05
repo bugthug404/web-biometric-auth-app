@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deviceRegistration } from "./utils/device-registration";
+import { deviceRegistration } from "../../next/pages/utils/device-registration";
 import axios from "axios";
 
 export default function Signup() {

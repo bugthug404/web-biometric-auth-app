@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { deviceRegistration } from "./utils/device-registration";
-import { verification } from "./utils/device-verification";
+import { deviceRegistration } from "../../next/pages/utils/device-registration";
+import { verification } from "../../next/pages/utils/device-verification";
 import axios from "axios";
 
 function App() {
