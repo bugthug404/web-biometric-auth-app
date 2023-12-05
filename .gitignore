@@ -10,3 +10,6 @@
 *.njsproj
 *.sln
 *.sw?
+
+# ignore next folder in root
+next
