@@ -17,7 +17,12 @@ export default async function handler(
     const db = new MongoDB();
     await db.connect();
 
-    const rpId = "localhost";
+    const rpId = process.env.RPID as string;
+    if (!rpId) {
+      return res.status(500).json({
+        error: "No RPID found",
+      });
+    }
     // let user: User | null = JSON.parse(storage["user"] || "null");
     // get user from db
     let user: User = (await db.getUser("user@localhost")) as User;

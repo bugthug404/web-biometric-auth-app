@@ -74,14 +74,23 @@ export default async function handler(
     }
   }
   const expectedChallenge = options?.challenge;
+  const rpId = process.env.RPID as string;
+  if (!rpId) {
+    throw new Error("No RP_ID configured");
+  }
+
+  const expectedOrigin = process.env.BASE_URL as string;
+  if (!expectedOrigin) {
+    throw new Error("No expected origin configured");
+  }
 
   let verification;
   try {
     const opts = {
       response: body,
       expectedChallenge: `${expectedChallenge}`,
-      expectedOrigin: process.env.BASE_URL as string,
-      expectedRPID: "localhost",
+      expectedOrigin: expectedOrigin,
+      expectedRPID: rpId,
       requireUserVerification: true,
     };
     verification = await verifyRegistrationResponse(opts);

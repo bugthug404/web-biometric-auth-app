@@ -56,7 +56,7 @@ export default async function handler(
   }
   let options;
 
-  const rpId = "localhost";
+  const rpId = process.env.RPID as string;
   if (!rpId) {
     throw new Error("No RP_ID configured");
   }
