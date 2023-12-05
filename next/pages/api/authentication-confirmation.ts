@@ -68,7 +68,7 @@ export default async function handler(
 
     if (optionsToken) {
       try {
-        options = jwt.verify(optionsToken, "your-secret-key");
+        options = jwt.verify(optionsToken, process.env.JWT_SECRET as string);
         console.log("options --- ", options);
       } catch (err: any) {
         console.log("err --- ", err);

@@ -89,7 +89,7 @@ export default async function handler(
     console.log("opts --- ", opts.excludeCredentials);
 
     options = await generateRegistrationOptions(opts);
-    const optionsToken = jwt.sign(options, "your-secret-key");
+    const optionsToken = jwt.sign(options, process.env.JWT_SECRET as string);
     cookies.set("options", optionsToken);
 
     storage["user"] = JSON.stringify(user);

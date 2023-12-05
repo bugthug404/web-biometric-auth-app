@@ -77,7 +77,7 @@ export default async function handler(
 
     const cookies = new Cookies(req, res);
 
-    const optionsToken = jwt.sign(options, "your-secret-key");
+    const optionsToken = jwt.sign(options, process.env.JWT_SECRET as string);
     cookies.set("authOptions", optionsToken);
 
     return res.json(options);
