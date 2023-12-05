@@ -1,4 +1,3 @@
-export const runtime = "edge";
 import { NextApiRequest, NextApiResponse } from "next";
 import MongoDB from "../../utils/api/mongodb-crud";
 

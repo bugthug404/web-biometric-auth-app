@@ -1,4 +1,3 @@
-// pages/api/registerOptions.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   GenerateRegistrationOptionsOpts,

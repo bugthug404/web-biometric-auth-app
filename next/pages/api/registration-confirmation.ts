@@ -1,4 +1,3 @@
-// pages/api/registrationConfirmation.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   // @ts-ignore
