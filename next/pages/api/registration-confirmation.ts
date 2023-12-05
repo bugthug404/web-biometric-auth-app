@@ -5,10 +5,10 @@ import {
   isoUint8Array,
   verifyRegistrationResponse,
 } from "@simplewebauthn/server";
-import { User, Device } from "../../utils/types";
+import { User, Device } from "../../utils/front/types";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
-import MongoDB from "./mongodb-crud";
+import MongoDB from "../../utils/api/mongodb-crud";
 
 // In-memory storage
 const storage: { [key: string]: any } = {};

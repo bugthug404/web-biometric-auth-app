@@ -1,4 +1,4 @@
-// utils/MongoDB.ts
+export const runtime = "edge";
 import {
   MongoClient,
   Db,

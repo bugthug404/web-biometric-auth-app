@@ -4,10 +4,10 @@ import {
   GenerateRegistrationOptionsOpts,
   generateRegistrationOptions,
 } from "@simplewebauthn/server";
-import { Device, User } from "../../utils/types";
+import { Device, User } from "../../utils/front/types";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
-import MongoDB from "./mongodb-crud";
+import MongoDB from "../../utils/api/mongodb-crud";
 
 // In-memory storage
 const storage: { [key: string]: any } = {};

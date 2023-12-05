@@ -1,4 +1,4 @@
-// pages/api/authOptions.ts
+export const runtime = "edge";
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   GenerateAuthenticationOptionsOpts,
@@ -6,8 +6,8 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from "@simplewebauthn/server";
-import { User } from "../../utils/types";
-import MongoDB from "./mongodb-crud";
+import { User } from "../../utils/front/types";
+import MongoDB from "../../utils/api/mongodb-crud";
 import Cookies from "cookies";
 import jwt from "jsonwebtoken";
 import { isoBase64URL, isoUint8Array } from "@simplewebauthn/server/helpers";

@@ -1,5 +1,6 @@
+export const runtime = "edge";
 import { NextApiRequest, NextApiResponse } from "next";
-import MongoDB from "./mongodb-crud";
+import MongoDB from "../../utils/api/mongodb-crud";
 
 export default async function handler(
   req: NextApiRequest,
