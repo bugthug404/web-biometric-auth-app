@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { authentication } from "../utils/front/device-authentication";
 import { deviceRegistration } from "../utils/front/device-registration";
+import Link from "next/link";
 
 function App() {
   const [error, setError] = useState("");
@@ -32,6 +33,20 @@ function App() {
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col items-center w-full max-w-sm gap-4 p-8 bg-gray-900">
         <div>Biometric Registration</div>
+        <div className="flex gap-4">
+          <Link
+            href={
+              "https://github.com/bugthug404/web-biometric-auth-app/tree/next"
+            }
+            target="_blank"
+            className="text-xs text-blue-300"
+          >
+            Github Repo
+          </Link>
+          <Link href={"documentation"} className="text-xs text-blue-300">
+            Documentation
+          </Link>
+        </div>
 
         <div
           onClick={async () => {
