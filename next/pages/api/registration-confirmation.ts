@@ -5,7 +5,7 @@ import {
   isoUint8Array,
   verifyRegistrationResponse,
 } from "@simplewebauthn/server";
-import { User, Device } from "../utils/types";
+import { User, Device } from "../../utils/types";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import MongoDB from "./mongodb-crud";
@@ -81,7 +81,7 @@ export default async function handler(
     const opts = {
       response: body,
       expectedChallenge: `${expectedChallenge}`,
-      expectedOrigin: "https://localhost:3000",
+      expectedOrigin: process.env.BASE_URL as string,
       expectedRPID: "localhost",
       requireUserVerification: true,
     };

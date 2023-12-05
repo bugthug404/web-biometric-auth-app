@@ -4,7 +4,7 @@ import {
   GenerateRegistrationOptionsOpts,
   generateRegistrationOptions,
 } from "@simplewebauthn/server";
-import { Device, User } from "../utils/types";
+import { Device, User } from "../../utils/types";
 import jwt from "jsonwebtoken";
 import Cookies from "cookies";
 import MongoDB from "./mongodb-crud";

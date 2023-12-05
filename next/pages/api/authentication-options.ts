@@ -4,7 +4,7 @@ import {
   GenerateAuthenticationOptionsOpts,
   generateAuthenticationOptions,
 } from "@simplewebauthn/server";
-import { User } from "../utils/types";
+import { User } from "../../utils/types";
 import MongoDB from "./mongodb-crud";
 import Cookies from "cookies";
 import jwt from "jsonwebtoken";

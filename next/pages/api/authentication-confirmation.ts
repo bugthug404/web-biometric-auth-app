@@ -6,7 +6,7 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from "@simplewebauthn/server";
-import { User } from "../utils/types";
+import { User } from "../../utils/types";
 import MongoDB from "./mongodb-crud";
 import Cookies from "cookies";
 import jwt from "jsonwebtoken";
@@ -59,7 +59,7 @@ export default async function handler(
       };
     }
 
-    const expectedOrigin = "https://localhost:3000";
+    const expectedOrigin = process.env.BASE_URL as string;
 
     const cookies = new Cookies(req, res);
     const optionsToken = cookies.get("authOptions");

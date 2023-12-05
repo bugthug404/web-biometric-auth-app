@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { authentication } from "./utils/device-authentication";
-import { deviceRegistration } from "./utils/device-registration";
+import { authentication } from "../utils/device-authentication";
+import { deviceRegistration } from "../utils/device-registration";
 
 function App() {
   const [error, setError] = useState("");
