@@ -10,7 +10,7 @@ export default function Loader() {
         <div
           className={`fixed top-0 left-0 bg-black/80 h-screen w-full gap-4 flex flex-col items-center justify-center`}
         >
-          <p>Loading..</p>
+          <p>Loading....</p>
           <button
             onClick={() => {
               setLoading(false);
