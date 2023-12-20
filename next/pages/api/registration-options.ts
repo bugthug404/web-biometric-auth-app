@@ -92,10 +92,10 @@ export default async function handler(
     cookies.set("options", optionsToken);
 
     storage["user"] = JSON.stringify(user);
-    const excludeCredentials = opts.excludeCredentials?.map((cred) => {
-      return JSON.stringify(cred);
-    });
-    db.update({ id: user.id }, { ...user, devices: excludeCredentials });
+    // const excludeCredentials = opts.excludeCredentials?.map((cred) => {
+    //   return JSON.stringify(cred);
+    // });
+    // db.update({ id: user.id }, { ...user, devices: excludeCredentials });
     // { ...user, devices: JSON.stringify(opts.excludeCredentials) }
   } catch (error: any) {
     console.log(error ?? "Unknown error");

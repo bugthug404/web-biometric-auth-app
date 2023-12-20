@@ -6,8 +6,10 @@ import axios from "axios";
 
 export async function deviceRegistration(
   setError: Function,
-  setSuccess: Function
+  setSuccess: Function,
+  setLoader: Function
 ) {
+  setLoader(true);
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
@@ -15,9 +17,9 @@ export async function deviceRegistration(
       const opts = data.data;
 
       let attResp;
-
+      setLoader(false);
       attResp = await startRegistration(opts);
-
+      setLoader(true);
       let verificationResp = await axios.post(
         `/api/registration-confirmation`,
         {
@@ -36,6 +38,7 @@ export async function deviceRegistration(
         setError("Something Went Wrong2");
         setSuccess("");
       }
+      setLoader(false);
     } catch (error: any) {
       console.log("error --- ", error);
       if (
@@ -54,4 +57,5 @@ export async function deviceRegistration(
   } else {
     setError("WebAuthn is not supported in this browser");
   }
+  setLoader(false);
 }

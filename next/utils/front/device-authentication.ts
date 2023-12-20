@@ -6,8 +6,10 @@ import axios from "axios";
 
 export async function authentication(
   setError: Function,
-  setSuccess: Function
+  setSuccess: Function,
+  setLoader: Function
 ): Promise<any> {
+  setLoader(true);
   // check if browser supports the WebAuthn API
   if (browserSupportsWebAuthn()) {
     try {
@@ -15,13 +17,14 @@ export async function authentication(
       const opts = data.data;
 
       let attResp;
+      setLoader(false);
       try {
         attResp = await startAuthentication(opts);
       } catch (error: any) {
         setError(error.message ?? "Something Went Wrong");
         setSuccess("");
       }
-
+      setLoader(true);
       let verificationResp = await axios.post(
         `/api/authentication-confirmation`,
         {
@@ -40,6 +43,7 @@ export async function authentication(
         setError("Something Went Wrong");
         setSuccess("");
       }
+      setLoader(false);
     } catch (error: any) {
       setError(
         error?.response?.data?.error ?? error.message ?? "Something Went Wrong"
@@ -49,4 +53,5 @@ export async function authentication(
   } else {
     setError("WebAuthn is not supported in this browser");
   }
+  setLoader(false);
 }

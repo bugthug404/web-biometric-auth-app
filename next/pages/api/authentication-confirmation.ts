@@ -84,16 +84,6 @@ export default async function handler(
     const bodyCredIDBuffer = Uint8Array.from(Buffer.from(body.rawId, "base64"));
     const devices = user.devices;
     for (const dev of devices) {
-      //   console.log("dev.credentialID --- ", dev.credentialID);
-      //   console.log("bodyCredIDBuffer --- ", bodyCredIDBuffer);
-      //   dev.credentialID ---  Uint8Array(32) [
-      //   194, 72,  98,  55,  25, 117, 176, 229,
-      //   8, 25, 163, 124,  10, 210, 197, 101,
-      //   164, 68,  54, 168,  10, 210, 156, 175,
-      //   97, 35, 152, 140, 144,   1, 236, 221
-      //   ]
-      //   bodyCredIDBuffer ---  wkhiNxl1sOUIGaN8CtLFZaRENqgK0pyvYSOYjJAB7N0
-      //   compare this to the registration confirmation
       const bb = dev.credentialID.every(
         (value, index) => value === bodyCredIDBuffer[index]
       );

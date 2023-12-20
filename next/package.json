@@ -11,8 +11,10 @@
   "dependencies": {
     "@simplewebauthn/browser": "^8.3.4",
     "@simplewebauthn/server": "^8.3.5",
+    "atom": "^1.4.2",
     "axios": "^1.6.2",
     "cookies": "^0.8.0",
+    "jotai": "^2.6.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "next": "14.0.3",
