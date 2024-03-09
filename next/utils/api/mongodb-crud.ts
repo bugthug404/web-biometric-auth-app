@@ -20,11 +20,16 @@ class MongoDB {
   }
 
   async connect() {
-    console.log("connecting to url --- ", url);
-    const connection = await this.client.connect();
-    this.db = this.client.db(dbName);
-    this.collection = this.db.collection(collectionName);
-    return connection;
+    try {
+      const connection = await this.client.connect();
+      this.db = this.client.db(dbName);
+      this.collection = this.db.collection(collectionName);
+      console.log("success = ", this.collection?.dbName);
+      return connection;
+    } catch (error) {
+      console.log("connection error : ", error);
+      return error;
+    }
   }
 
   async create(doc: Document): Promise<string> {
