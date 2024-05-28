@@ -22,12 +22,24 @@ export default async function handler(
   const cookies = new Cookies(req, res);
   const token = cookies.get("session");
   // const u = storage["user"];
-  let user: User = (await db.getUser("user@localhost")) as User;
+  let user: User = (await db.getUser("karan@mail.com")) as User;
   console.log("user --- ", user, typeof user);
+  if (!user) {
+    const nu = {
+      id: "internalUserId",
+      username: "karan@mail.com",
+      devices: [],
+    };
+
+    await db.create(nu);
+
+    user = (await db.getUser("karan@mail.com")) as User;
+  }
   if (user) {
     // user = JSON.parse(user);
+    console.log("devices --- ", user.devices);
     const dd: Device[] = user.devices.map((d) => {
-      const device = JSON.parse(d as any);
+      const device = JSON?.parse((d as any) ?? {});
 
       const uint8Array32 = new Uint8Array(32);
       const uint8Array272 = new Uint8Array(272);
@@ -50,7 +62,7 @@ export default async function handler(
   } else {
     user = {
       id: "internalUserId",
-      username: "user@localhost",
+      username: "karan@mail.com",
       devices: [],
     };
   }

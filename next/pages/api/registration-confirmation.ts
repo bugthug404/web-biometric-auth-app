@@ -24,9 +24,7 @@ export default async function handler(
   // let user: User | null = JSON.parse(storage["user"] || "null");
   // get user from db
 
-  let user: User = (await db.getUser("user@localhost")) as User;
-
-  console.log("user --- ", user);
+  let user: User = (await db.getUser("karan@mail.com")) as User;
 
   if (!user) {
     return res.status(500).json({
@@ -108,7 +106,7 @@ export default async function handler(
       const { credentialPublicKey, credentialID, counter } = registrationInfo;
 
       existingDevice = user?.devices?.find((device: Device) => {
-        return isoUint8Array.areEqual(device.credentialID, credentialID);
+        return isoUint8Array?.areEqual(device.credentialID, credentialID);
       });
 
       if (!existingDevice) {
@@ -127,8 +125,11 @@ export default async function handler(
   }
 
   if (newDevice) {
-    user.devices.push(JSON.stringify(newDevice) as any);
-    console.log("new user ---- ", user, newDevice);
+    const d = JSON?.stringify(newDevice as any);
+    const ds = user?.devices?.map((v) => JSON?.stringify(v as any));
+    user.devices = [`${d}` as any, ...ds];
+    console.log("new user ---- ", user, "dd -- ", d, newDevice);
+
     db.update({ id: user.id }, user);
 
     // storage["user"] = JSON.stringify(user);

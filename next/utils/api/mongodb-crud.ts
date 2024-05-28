@@ -7,7 +7,7 @@ import {
 } from "mongodb";
 
 const url = process.env.MONGODB_URI || "";
-const dbName = "webauthn";
+const dbName = "biometric";
 const collectionName = "users";
 
 class MongoDB {

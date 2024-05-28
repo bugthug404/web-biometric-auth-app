@@ -11,13 +11,13 @@ import { deleteDevices } from "./auth/delete-devices";
 
 const app = express();
 
-app.use(
-  Cors({
-    origin: "https://localhost:5173", // replace with your frontend url
-    // credentials: true, // enable set cookie if using session based authentication
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
-);
+// app.use(
+//   Cors({
+//     origin: "https://localhost:5173", // replace with your frontend url
+//     // credentials: true, // enable set cookie if using session based authentication
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   })
+// );
 
 // app.use(
 //   session({
@@ -42,7 +42,8 @@ const certificate = fs.readFileSync("secrets/cert.pem", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
 // create the HTTPS server
-const httpsServer = https.createServer(credentials, app);
+// const httpsServer = https.createServer(credentials, app);
+const httpsServer = app;
 
 // add json middleware for parsing json body in requests
 app.use(express.json());
@@ -54,6 +55,14 @@ app.get("/", (req: Request, res: Response) =>
   })
 );
 
+app.use(Cors({ origin: "*" }));
+
+app.post("/", (req: Request, res: Response) => {
+  console.log(req.body);
+  return res.status(200).send({
+    data: `server says : get request on time : ${new Date().getTime()}`,
+  });
+});
 // add the routes for registration and verification
 app.get("/registration-options", registerOptions);
 app.post("/registration-confirmation", registrationConfirmation);

@@ -40,7 +40,7 @@ function App() {
       <Loader />
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col items-center w-full max-w-sm gap-4 p-8 bg-gray-900">
-          <div>Biometric Registration</div>
+          <div onClick={() => setLoading(true)}>Biometric Registration</div>
           <div className="flex gap-4">
             <Link
               href={

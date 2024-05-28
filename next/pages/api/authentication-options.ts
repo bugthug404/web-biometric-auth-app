@@ -16,6 +16,7 @@ export default async function handler(
     // connect to db
     const db = new MongoDB();
     await db.connect();
+    const userMail = "karan@mail.com";
 
     const rpId = process.env.RPID as string;
     if (!rpId) {
@@ -25,7 +26,7 @@ export default async function handler(
     }
     // let user: User | null = JSON.parse(storage["user"] || "null");
     // get user from db
-    let user: User = (await db.getUser("user@localhost")) as User;
+    let user: User = (await db.getUser(userMail)) as User;
 
     if (!user) {
       return res.status(500).json({
@@ -39,7 +40,14 @@ export default async function handler(
       });
     } else {
       const devices = user.devices.map((d) => {
-        const device = JSON.parse(d as any);
+        console.log("json parsed device", typeof d);
+        let device;
+        if (typeof d === "string") {
+          device = JSON.parse(d as any);
+        } else {
+          device = d;
+        }
+        console.log("json parsed device", device);
         const uint8Array32 = new Uint8Array(32);
         const uint8Array272 = new Uint8Array(272);
         for (let i = 0; i < 32; i++) {

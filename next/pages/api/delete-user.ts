@@ -5,6 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const userMail = "karan@mail.com";
   // Check if the method is DELETE
   if (req.method !== "DELETE") {
     res.setHeader("Allow", "DELETE");
@@ -16,7 +17,7 @@ export default async function handler(
 
   try {
     // check if user exists
-    const user = await db.getUser("user@localhost");
+    const user = await db.getUser(userMail);
 
     if (!user) {
       return res.status(500).json({
@@ -25,7 +26,7 @@ export default async function handler(
     }
 
     // delete user
-    const result = await db.delete({ username: "user@localhost" });
+    const result = await db.delete({ username: userMail });
 
     if (result === 0) {
       return res.status(500).json({
